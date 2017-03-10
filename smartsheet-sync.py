@@ -10,6 +10,12 @@ import boto3
 import smartsheet as smartsheet_sdk
 
 
+__author__ = "Chris Lunsford"
+__author_email__ = "chrlunsf@cisco.com"
+__copyright__ = "Copyright (c) 2016 Cisco Systems, Inc."
+__license__ = "MIT"
+
+
 # Setup logging
 logger = logging.getLogger()
 try:
