@@ -162,21 +162,22 @@ def update_table(table, data):
     logger.info("Batch table update complete.")
 
 
-# AWS Lambda Funtion
-def lambda_handler(event, context):
+# Main
+def main():
     sheet = get_smartsheet()
     table = get_table()
     data = extract_data(sheet)
     update_table(table, data)
-
-    if __name__ == "__main__":
-        return (sheet, data, table)
-    else:
-        return 'SmartSheet Sync to Table {} Successful'.format(SHEET_ID)
+    return (sheet, data, table)
 
 
-# Main
+# AWS Lambda Function
+def lambda_handler(event, context):
+    main()
+    return {"statusCode": 200}
+
+
 if __name__ == "__main__":
     enable_logging_to_console(logging.INFO)
     test_smartsheet_connection()
-    sheet, data, table = lambda_handler({}, {})
+    sheet, data, table = main()
