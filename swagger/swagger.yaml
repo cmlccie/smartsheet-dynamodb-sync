@@ -26,7 +26,7 @@ paths:
       summary: "receives webhook callbacks"
       description: "Callback target for SmartSheet Webhooks.  Receives SmartSheet\
         \ webhook callback requests."
-      operationId: "webhookCallback"
+      operationId: "WebhookCallback"
       produces:
       - "application/json"
       parameters: []
