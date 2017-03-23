@@ -1,0 +1,12 @@
+version: 0.1
+phases:
+  install:
+    commands:
+      - pip install -t vendor -r vendor.txt
+      - aws cloudformation package --template-file samTemplate.yaml
+		                           --output-template-file newSamTemplate.yaml
+		                           --s3-bucket ssdb-sync
+artifacts:
+  type: zip
+  files:
+    - newSamTemplate.yaml
