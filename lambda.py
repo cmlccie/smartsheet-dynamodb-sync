@@ -172,7 +172,7 @@ def main():
 
 
 # AWS Lambda Function
-def lambda_handler(event, context):
+def handler(event, context):
     main()
     return {"statusCode": 200}
 
