@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 """SmartSheet Sync Lambda Function."""
 
-
 import logging
 import os
 import sys
+from base64 import b64decode
 
 import boto3
 
@@ -37,14 +37,19 @@ logger.addHandler(NullHandler())
 
 
 # Constants
+SMARTSHEET_ACCESS_TOKEN = boto3.client('kms').decrypt(
+    CiphertextBlob=b64decode(os.environ['ENCRYPTED_SMARTSHEET_ACCESS_TOKEN'])
+    )['Plaintext']
+NEW_TABLE_DEFAULT_READ_CAPACITY_UNITS = int(
+    os.getenv('NEW_TABLE_DEFAULT_READ_CAPACITY_UNITS'))
+NEW_TABLE_DEFAULT_WRITE_CAPACITY_UNITS = int(
+    os.getenv('NEW_TABLE_DEFAULT_WRITE_CAPACITY_UNITS'))
 SHEET_ID = os.getenv('SHEET_ID')
-READ_CAPACITY_UNITS = int(os.getenv('READ_CAPACITY_UNITS'))
-WRITE_CAPACITY_UNITS = int(os.getenv('WRITE_CAPACITY_UNITS'))
 COLUMN_TITLES_ID = '0'
 
 
 # Setup SmartSheet connection
-smartsheet = smartsheet_sdk.Smartsheet()
+smartsheet = smartsheet_sdk.Smartsheet(access_token=SMARTSHEET_ACCESS_TOKEN)
 primary_column_id = None
 
 
@@ -135,8 +140,8 @@ def create_table():
             },
         ],
         ProvisionedThroughput={
-            'ReadCapacityUnits': READ_CAPACITY_UNITS,
-            'WriteCapacityUnits': WRITE_CAPACITY_UNITS
+            'ReadCapacityUnits': NEW_TABLE_DEFAULT_READ_CAPACITY_UNITS,
+            'WriteCapacityUnits': NEW_TABLE_DEFAULT_WRITE_CAPACITY_UNITS
         }
     )
     # Wait until the table exists.
