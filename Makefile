@@ -8,13 +8,17 @@ lambda-zip: lambda.py
 aws-s3-bucket:
 	aws s3 mb s3://ssdb-sync
 
+upload-configs:
+	zip -j build/templateConfigurations.zip config/*TemplateConfiguration.json
+	aws s3 cp build/templateConfigurations.zip s3://ssdb-sync/
+
 aws-cloudformation-deployment: samTemplate.yaml
 	aws cloudformation package \
 		--template-file samTemplate.yaml \
-		--output-template-file build/serverless-output.yaml \
+		--output-template-file build/newSamTemplate.yaml \
 		--s3-bucket ssdb-sync
 
 	aws cloudformation deploy \
-		--template-file build/serverless-output.yaml \
+		--template-file build/newSamTemplate.yaml \
 		--stack-name ssdb-sync \
 		--capabilities CAPABILITY_IAM
