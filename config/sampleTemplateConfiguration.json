@@ -1,9 +1,9 @@
 {
   "Parameters": {
-    "IAM_Role": "",
-    "ENCRYPTED_SMARTSHEET_ACCESS_TOKEN": "",
-    "SHEET_ID": "",
-    "NEW_TABLE_DEFAULT_READ_CAPACITY_UNITS": "",
-    "NEW_TABLE_DEFAULT_WRITE_CAPACITY_UNITS": ""
+    "IAMRole": "",
+    "EncryptedSmartSheetAccessToken": "",
+    "SheetID": "",
+    "NewTableDefaultReadCapacityUnits": "",
+    "NewTableDefaultWriteCapacityUnits": ""
   }
 }
