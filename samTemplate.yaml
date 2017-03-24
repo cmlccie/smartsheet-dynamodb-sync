@@ -8,9 +8,6 @@ Parameters:
   ENCRYPTED_SMARTSHEET_ACCESS_TOKEN:
     Description: Your SmartSheet API access token; KMS encrypted and Base64 encoded.
     Type: String
-    MinLength: '4'
-    AllowedPattern: '^[A-Za-z0-9+/=]*'
-    ConstraintDescription: Must be a valid Base64 encoded string.
   SHEET_ID:
     Description: The sheet ID of the SmartSheet to be synced to the DynamoDB database table.
     Type: String
