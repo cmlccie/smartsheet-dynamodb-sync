@@ -2,6 +2,11 @@
 # -*- coding: utf-8 -*-
 """SmartSheet Sync Lambda Function."""
 
+
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+from builtins import *
+
 import logging
 import os
 import sys
