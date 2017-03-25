@@ -24,16 +24,6 @@ __copyright__ = "Copyright (c) 2016 Cisco Systems, Inc."
 __license__ = "MIT"
 
 
-# Setup logging
-logger = logging.getLogger()
-try:
-    from logging import NullHandler
-except ImportError:
-    class NullHandler(logging.Handler):
-        def emit(self, record):
-            pass
-logger.setLevel(logging.INFO)
-logger.addHandler(NullHandler())
 
 
 # Constants
@@ -44,6 +34,8 @@ NEW_TABLE_DEFAULT_READ_CAPACITY_UNITS = int(
     os.getenv('NEW_TABLE_DEFAULT_READ_CAPACITY_UNITS'))
 NEW_TABLE_DEFAULT_WRITE_CAPACITY_UNITS = int(
     os.getenv('NEW_TABLE_DEFAULT_WRITE_CAPACITY_UNITS'))
+LOG_LEVEL = os.getenv('LOG_LEVEL')
+ENCRYPTED_SMARTSHEET_ACCESS_TOKEN = os.getenv('ENCRYPTED_SMARTSHEET_ACCESS_TOKEN')
 SHEET_ID = os.getenv('SHEET_ID')
 COLUMN_TITLES_ID = '0'
 
@@ -51,6 +43,9 @@ COLUMN_TITLES_ID = '0'
 # Setup SmartSheet connection
 smartsheet = smartsheet_sdk.Smartsheet(access_token=SMARTSHEET_ACCESS_TOKEN)
 primary_column_id = None
+# Initialize logging
+logging.getLogger().setLevel(getattr(logging, LOG_LEVEL))
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 # Setup DynamoDB connection

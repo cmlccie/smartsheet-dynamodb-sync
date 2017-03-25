@@ -5,6 +5,16 @@ Parameters:
   IAMRole:
     Description: The IAM role for the lambda function.
     Type: String
+  LogLevel:
+    Description: Sets the Logging Level for the Lambda Function.
+    Type: String
+    AllowedValues:
+    - DEBUG
+    - INFO
+    - WARNING
+    - ERROR
+    - CRITICAL
+    Default: WARNING
   EncryptedSmartSheetAccessToken:
     Description: Your SmartSheet API access token; KMS encrypted and Base64 encoded.
     Type: String
@@ -42,6 +52,7 @@ Resources:
       Role: !Ref IAMRole
       Environment:
         Variables:
+          LOG_LEVEL: !Ref LogLevel
           ENCRYPTED_SMARTSHEET_ACCESS_TOKEN: !Ref EncryptedSmartSheetAccessToken
           SHEET_ID: !Ref SheetID
           NEW_TABLE_DEFAULT_READ_CAPACITY_UNITS: !Ref NewTableDefaultReadCapacityUnits

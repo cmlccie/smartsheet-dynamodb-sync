@@ -1,6 +1,7 @@
 {
   "Parameters": {
     "IAMRole": "",
+    "LogLevel": "",
     "EncryptedSmartSheetAccessToken": "",
     "SheetID": "",
     "NewTableDefaultReadCapacityUnits": "",
