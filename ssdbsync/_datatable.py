@@ -77,8 +77,15 @@ class DataTable(object):
         """
         logger.debug("Adding Row: {!r}".format(row))
         assert isinstance(row, dict)
-        assert 'id' in row.keys() and isinstance(row['id'], basestring)
+        assert 'id' in row.keys()
         assert 'data' in row.keys() and isinstance(row['data'], dict)
+
+        # Ensure IDs are strings
+        if not isinstance(row['id'], basestring):
+            row['id'] = str(row['id'])
+            assert isinstance(row['id'], basestring)
+
+        # Add row
         self._rows.append(row)
 
     def iterrows(self):
