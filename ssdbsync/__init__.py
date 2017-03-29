@@ -7,8 +7,8 @@ from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 from builtins import *
 
-from .dynamodb import DynamoDBInterface
-from .smartsheet import SmartSheetInterface
+from ._dynamodb import DynamoDBInterface
+from ._smartsheet import SmartSheetInterface
 
 __author__ = "Chris Lunsford"
 __author_email__ = "chrlunsf@cisco.com"
