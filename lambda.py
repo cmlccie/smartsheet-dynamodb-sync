@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """SmartSheet Sync Lambda Function."""
+"""SmartSheet-to-DynamoDB Sync Lambda Function."""
 
 
 from __future__ import (absolute_import, division,
@@ -86,41 +87,10 @@ def create_table():
             {
                 'AttributeName': 'id',
                 'AttributeType': 'S'
-            },
-        ],
-        ProvisionedThroughput={
-            'ReadCapacityUnits': DEFAULT_READ_CAPACITY_UNITS,
-            'WriteCapacityUnits': DEFAULT_WRITE_CAPACITY_UNITS
-        }
-    )
-    # Wait until the table exists.
-    table.meta.client.get_waiter('table_exists').wait(TableName=SHEET_ID)
-    return table
-
-
-def get_table():
-    """Get the DynamoDB table."""
-    logger.info("Getting the DynamoDB table '{}'.".format(SHEET_ID))
-    if SHEET_ID not in [table.name for table in dynamodb.tables.all()]:
-        logger.info("Table '{}' not found.".format(SHEET_ID))
-        return create_table()
-    return dynamodb.Table(SHEET_ID)
-
-
-def update_table(table, data):
-    logger.info("Begin batch table update.")
-    with table.batch_writer() as batch:
-        for data_row in data:
-            logger.debug("Adding Item ID: {id}".format(**data_row))
-            batch.put_item(Item=data_row)
-    logger.info("Batch table update complete.")
-
-
 # Main
 def main():
     data = smartsheet.extract_data(SHEET_ID)
-    update_table(table, data)
-    return (sheet, data, table)
+    dynamodb.update_table(SHEET_ID, data)
 
 
 # AWS Lambda Function
