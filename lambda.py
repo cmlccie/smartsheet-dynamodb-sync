@@ -31,15 +31,14 @@ sys.path.append(vendor_dir)
 
 
 # Constants
-LOG_LEVEL = os.getenv('LOG_LEVEL')
 ENCRYPTED_SMARTSHEET_ACCESS_TOKEN = os.getenv('ENCRYPTED_SMARTSHEET_ACCESS_TOKEN')
 SHEET_ID = os.getenv('SHEET_ID')
 COLUMN_TITLES_ID = '0'
 
 
 # Initialize logging
-logging.getLogger().setLevel(getattr(logging, LOG_LEVEL))
-logging.getLogger(__name__).addHandler(logging.NullHandler())
+ssdbsync.initialize_logging()
+logger = logging.getLogger(__name__)
 
 
 # Initialize AWS Key Management System (KMS) interface
@@ -54,19 +53,6 @@ smartsheet = ssdbsync.SmartSheetInterface(smartsheet_access_token)
 
 # Initialize DynamoDB interface
 dynamodb = ssdbsync.DynamoDBInterface()
-
-
-# Helper functions
-def enable_logging_to_console(log_level=logging.WARNING):
-    """Enable console logging."""
-    global console_handler
-    root_logger = logging.getLogger()
-    root_logger.setLevel(logging.DEBUG)
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(log_level)
-    console_handler.setFormatter(
-        logging.Formatter('[%(levelname)-8s] %(name)s:  %(message)s'))
-    root_logger.addHandler(console_handler)
 
 
 # Core functions

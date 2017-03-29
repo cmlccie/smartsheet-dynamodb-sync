@@ -20,6 +20,10 @@ __copyright__ = "Copyright (c) 2017 Cisco Systems, Inc."
 __license__ = "MIT"
 
 
+# Initialize module logging
+logger = logging.getLogger(__name__)
+
+
 # Helper Functions
 def cell_is_not_empty(row, column_id):
     """Check whether the value of a cell in a SmartSheet row is empty."""
@@ -37,8 +41,7 @@ class SmartSheetInterface(object):
 
     def __init__(self, access_token):
         """Init a new SmartSheetConnection object."""
-        self._logger = logging.getLogger(__name__)
-        self._logger.info("Initializing a new SmartSheetConnection object.")
+        logger.info("Initializing a new SmartSheetConnection object.")
         
         super(SmartSheetInterface, self).__init__()
         self.__access_token = access_token
@@ -49,23 +52,23 @@ class SmartSheetInterface(object):
     @property
     def connected(self):
         """SmartSheet connection test."""
-        self._logger.info("Beginning SmartSheet connection test.")
+        logger.info("Beginning SmartSheet connection test.")
         try:
             user = self._sdk.Users.get_current_user()
         except smartsheet.exceptions.SmartsheetException as e:
-            self._logger.critical("SmartSheet connection test FAILED; "
-                                  "exception raised.", exc_info=True)
+            logger.critical("SmartSheet connection test FAILED; "
+                            "exception raised.", exc_info=True)
             return False
         else:
             if isinstance(user, smartsheet.models.Error):
-                self._logger.critical("SmartSheet connection test FAILED; "
-                                      "returned error:\n"
-                                      "{}.".format(user.to_json()))
+                logger.critical("SmartSheet connection test FAILED; "
+                                "returned error:\n"
+                                "{}.".format(user.to_json()))
                 return False
             else:
-                self._logger.info("Connected to SmartSheet with user account: "
-                                  "{firstName} {lastName} "
-                                  "<{email}>".format(**user.to_dict()))
+                logger.info("Connected to SmartSheet with user account: "
+                            "{firstName} {lastName} "
+                            "<{email}>".format(**user.to_dict()))
                 return True
 
     def get_sheet(self, sheet_id):
@@ -78,8 +81,8 @@ class SmartSheetInterface(object):
             smartsheet.models.Sheet: The SmartSheet sheet object.
 
         """
-        self._logger.info("Getting the SmartSheet object for "
-                          "Sheet ID '{}'.".format(sheet_id))
+        logger.info("Getting the SmartSheet object for Sheet ID "
+                    "'{}'.".format(sheet_id))
         return self._sdk.Sheets.get_sheet(sheet_id, page=None, page_size=None)
 
     def extract_data(self, sheet_id):
@@ -92,7 +95,7 @@ class SmartSheetInterface(object):
             DataTable: The data extracted from the SmartSheet.
 
         """
-        self._logger.info("Extracting data from Sheet ID {}.".format(sheet_id))
+        logger.info("Extracting data from Sheet ID {}.".format(sheet_id))
 
         sheet = self.get_sheet(sheet_id)
         data = DataTable(sheet_id)

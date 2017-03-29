@@ -18,14 +18,16 @@ __copyright__ = "Copyright (c) 2017 Cisco Systems, Inc."
 __license__ = "MIT"
 
 
+# Initialize module logging
+logger = logging.getLogger(__name__)
+
+
 # Core Functionality
 class DataTable(object):
     """Data model for extracted table data."""
 
     def __init__(self, id):
-        self._logger = logging.getLogger(__name__)
-        self._logger.info("Initializing DataTable object: "
-                          "id = {id}".format(id))
+        logger.info("Initializing DataTable object '{}'".format(id))
 
         super(DataTable, self).__init__()
         self._id = id if isinstance(id, basestring) else str(id)
@@ -39,21 +41,21 @@ class DataTable(object):
 
     def add_column(self, id, title):
         """Validate and add column id to title mapping."""
-        self._logger.debug("Adding Column: "
-                           "\{{id}, {title}\}".format(id=id, title=title))
+        logger.debug("Adding Column: "
+                           "{id}, {title}".format(id=id, title=title))
 
         id = id if isinstance(id, basestring) else str(id)
         assert isinstance(id, basestring)
         assert isinstance(title, basestring)
 
         if id in self._columns.keys():
-            self._logger.warning("Duplicate Column ID: {}".format(id))
+            logger.warning("Duplicate Column ID: {}".format(id))
         if title in self._columns.values():
-            self._logger.warning("Duplicate Column Title: {}\n"
+            logger.warning("Duplicate Column Title: {}\n"
                                  "This table will not serialize to JSON well."
                                  "".format(title))
         if title == 'id':
-            self._logger.warning("Column with Title 'id' found.\n"
+            logger.warning("Column with Title 'id' found.\n"
                                  "This table will not serialize to JSON well.")
 
         self._columns[id] = title
@@ -64,7 +66,7 @@ class DataTable(object):
         return self._columns.copy()
 
     def add_row(self, row):
-        """Validate and row to DataTable.
+        """Validate and add row to DataTable.
 
         Args:
             row(dict): With 'id' and 'data' keys.
@@ -73,8 +75,7 @@ class DataTable(object):
                 value mappings.
 
         """
-        self._logger.debug("Adding Row: {!r}".format(row))
-
+        logger.debug("Adding Row: {!r}".format(row))
         assert isinstance(row, dict)
         assert 'id' in row.keys() and isinstance(row['id'], basestring)
         assert 'data' in row.keys() and isinstance(row['data'], dict)
