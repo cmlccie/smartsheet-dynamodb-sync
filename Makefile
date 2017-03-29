@@ -1,5 +1,7 @@
 init: requirements.txt vendor.txt
 	pip install -r requirements.txt
+	if [ -d vendor ]; then rm -r vendor; fi;
+	mkdir vendor
 	pip install -t vendor -r vendor.txt
 
 lambda-zip: lambda.py
