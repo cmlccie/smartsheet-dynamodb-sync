@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""SmartSheet Sync Lambda Function."""
 """SmartSheet-to-DynamoDB Sync Lambda Function."""
 
 
@@ -61,13 +60,24 @@ def main():
     dynamodb.update_table(SHEET_ID, data)
 
 
-# AWS Lambda Function
+# AWS Lambda Function Handler
 def handler(event, context):
-    main()
-    return {"statusCode": 200}
+    try:
+        main()
+    except Exception as e:
+        logger.critical(e, exc_info=True)
+        return {"statusCode": 500}
+    else:
+        return {"statusCode": 200}
 
 
+# Running the script on a developer workstation
 if __name__ == "__main__":
-    enable_logging_to_console(logging.INFO)
-    test_smartsheet_connection()
-    sheet, data, table = main()
+    ssdbsync.enable_console_logging()
+    try:
+        main()
+    except Exception as e:
+        logger.critical(e, exc_info=True)
+        sys.exit(1)
+    else:
+        sys.exit(0)
