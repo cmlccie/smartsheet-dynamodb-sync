@@ -3,12 +3,17 @@
 """SmartSheet-to-DynamoDB Sync Lambda Function."""
 
 
+# Add vendor directory to module search path
+import os
+parent_dir = os.path.abspath(os.path.dirname(__file__))
+vendor_dir = os.path.join(parent_dir, 'vendor')
+sys.path.append(vendor_dir)
+
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 from builtins import *
 
 import logging
-import os
 import sys
 from base64 import b64decode
 
@@ -21,12 +26,6 @@ __author__ = "Chris Lunsford"
 __author_email__ = "chrlunsf@cisco.com"
 __copyright__ = "Copyright (c) 2017 Cisco Systems, Inc."
 __license__ = "MIT"
-
-
-# Add vendor directory to module search path
-parent_dir = os.path.abspath(os.path.dirname(__file__))
-vendor_dir = os.path.join(parent_dir, 'vendor')
-sys.path.append(vendor_dir)
 
 
 # Constants
