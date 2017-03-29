@@ -55,24 +55,6 @@ smartsheet = ssdbsync.SmartSheetInterface(smartsheet_access_token)
 dynamodb = ssdbsync.DynamoDBInterface()
 
 
-# Core functions
-
-
-def create_table():
-    """Create the DynamoDB table."""
-    logger.info("Creating a new DynamoDB table '{}'.".format(SHEET_ID))
-    table = dynamodb.create_table(
-        TableName=SHEET_ID,
-        KeySchema=[
-            {
-                'AttributeName': 'id',
-                'KeyType': 'HASH'
-            },
-        ],
-        AttributeDefinitions=[
-            {
-                'AttributeName': 'id',
-                'AttributeType': 'S'
 # Main
 def main():
     data = smartsheet.extract_data(SHEET_ID)
